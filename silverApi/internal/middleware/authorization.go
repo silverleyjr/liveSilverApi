@@ -24,6 +24,16 @@ func Authorization(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
+		if r.Method == http.MethodPost {
+			if r.Header.Get("Owner") == "SilverleyFodao" {
+				next.ServeHTTP(w, r)
+				return
+			} else {
+				log.Error(UnAuthorizedError)
+				api.RequestErrorHandler(w, UnAuthorizedError)
+				return
+			}
+		}
 
 		//var username string = r.URL.Query().Get("username")
 

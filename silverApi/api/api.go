@@ -10,12 +10,12 @@ type PasswordParams struct {
 }
 
 type PasswordResponse struct {
-	Code    int
-	Password string
+	Code   int
+	Active string
 }
 
 type NewUserResponse struct {
-	Code    int
+	Code int
 }
 
 type Error struct {
