@@ -24,7 +24,7 @@ func GetPasswordDatabase(w http.ResponseWriter, r *http.Request) {
 	//err = decoder.Decode(&params, r.URL.Query())
 
 	var err error
-	user := r.Header.Get("Username")
+	user := r.Header.Get("AuthToken")
 	var database *tools.DatabaseInterface
 	database, err = tools.NewDatabase()
 	if err != nil {
@@ -33,8 +33,8 @@ func GetPasswordDatabase(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println("user recebido:" + user)
-	var tokenDetails *tools.User
-	tokenDetails = (*database).GetAllUserDetails(user)
+	var tokenDetails *tools.LoginDetails
+	tokenDetails = (*database).GetUserLoginDetails(user)
 	if tokenDetails == nil {
 		log.Error(err)
 		api.InternalErrorHandler(w)
@@ -64,7 +64,7 @@ func PostUser(w http.ResponseWriter, r *http.Request) {
 	if name == "" || password == "" || authorization == "" {
 		api.RequestErrorHandler(w, errors.New("Not mactch params"))
 	} else {
-		newUser := tools.User{Name: name, Password: password, Authorization: authorization}
+		newUser := tools.LoginDetails{Authorization: name, Password: password}
 
 		w.Header().Set("Content-Type", "application/json")
 		err = tools.NewUser(newUser)

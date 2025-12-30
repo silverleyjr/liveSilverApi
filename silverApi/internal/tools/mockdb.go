@@ -6,8 +6,15 @@ import (
 
 type mockDB struct{}
 
-func (d *mockDB) GetAllUserDetails(username string) *User {
-	var clientData = User{}
+//func (d *mockDB) GetAllUserDetails(username string) *User {
+//	var clientData = User{}
+//	clientData = getUserByName(username)
+//	fmt.Println(clientData)
+//	return &clientData
+//}
+
+func (d *mockDB) GetUserLoginDetails(username string) *LoginDetails {
+	var clientData = LoginDetails{}
 	clientData = getUserByName(username)
 	fmt.Println(clientData)
 	return &clientData

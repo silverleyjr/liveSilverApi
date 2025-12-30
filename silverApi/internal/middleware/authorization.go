@@ -27,15 +27,15 @@ func Authorization(next http.Handler) http.Handler {
 
 		//var username string = r.URL.Query().Get("username")
 
-		username := r.Header.Get("Username")
+		password := r.Header.Get("Password")
 		var token = r.Header.Get("Authorization")
 
 		//token := "SilverleyFodao"
-		fmt.Println("token=" + token)
-		fmt.Println("user=" + username)
+		fmt.Println("token =" + token)
+		fmt.Println("password =" + password)
 		var err error
 
-		if username == "" || token == "" {
+		if password == "" || token == "" {
 			log.Error(UnAuthorizedError)
 			api.RequestErrorHandler(w, UnAuthorizedError)
 			return
@@ -50,8 +50,8 @@ func Authorization(next http.Handler) http.Handler {
 			return
 		}
 
-		var loginDetails *tools.User
-		loginDetails = (*database).GetAllUserDetails(username)
+		var loginDetails *tools.LoginDetails
+		loginDetails = (*database).GetUserLoginDetails(token)
 
 		fmt.Println("antes do if informaçao valida")
 		if loginDetails == nil || (token != (*loginDetails).Authorization) {

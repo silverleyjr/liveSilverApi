@@ -10,21 +10,16 @@ import (
 )
 
 var (
-	usersByName = map[string]User{}
+	usersByName = map[string]LoginDetails{}
 )
 
 func InitDatabase() {
 	users := readUsers("usersDetails.txt")
 	generateUserMap(users)
 
-	i := 1
-	for _, user := range users {
-		fmt.Printf("user number %d is %s\n", i, user.Name)
-		i++
+	for i, user := range users {
+		fmt.Printf("user number %d is %s\n", (i+1), user.Authorization)
 	}
-	//for _, user := range users {
-	//	fmt.Printf("My user is %s\n", user.Name)
-	//}
 }
 
 func ResetUsers() {
@@ -33,18 +28,18 @@ func ResetUsers() {
 		fmt.Println("erro no resetUsers")
 		panic(err)
 	}
-	silverley := User{"Murillo", "bostolao", "SilverleyFodao"}
-	camilla := User{"Murillo", "bostolao", "SilverleyFodao"}
-	murillo := User{"Murillo", "bostolao", "SilverleyFodao"}
+	silverley := LoginDetails{"Silverley", "bostolao"}
+	camilla := LoginDetails{"Camilla", "bostolao"}
+	murillo := LoginDetails{"Murillo", "bostolao"}
 	NewUser(silverley)
 	NewUser(camilla)
 	NewUser(murillo)
 }
 
-func NewUser(newUser User) error {
+func NewUser(newUser LoginDetails) error {
 	users := readUsers("usersDetails.txt")
-	fmt.Println(newUser.Name)
-	if getUserByName(newUser.Name).Name == "" {
+	fmt.Println(newUser.Authorization)
+	if getUserByName(newUser.Authorization).Authorization == "" {
 		users = append(users, newUser)
 
 		usersBytes, err := json.Marshal(users)
@@ -66,16 +61,16 @@ func NewUser(newUser User) error {
 		return errors.New("User already exists")
 	}
 }
-func getUserByName(name string) User {
+func getUserByName(name string) LoginDetails {
 	return usersByName[name]
 }
 
-func generateUserMap(users []User) {
+func generateUserMap(users []LoginDetails) {
 	for _, user := range users {
-		usersByName[user.Name] = user
+		usersByName[user.Authorization] = user
 	}
 }
-func readUsers(fileName string) []User {
+func readUsers(fileName string) []LoginDetails {
 	dataByte, err := os.ReadFile(fileName)
 
 	if err != nil {
@@ -84,7 +79,7 @@ func readUsers(fileName string) []User {
 		fmt.Println(err)
 	}
 
-	var usersFromFile []User
+	var usersFromFile []LoginDetails
 	err = json.Unmarshal(dataByte, &usersFromFile)
 	if err != nil {
 		fmt.Println("erro no read user 2")

@@ -5,24 +5,24 @@ import (
 )
 
 type LoginDetails struct {
-	AuthToken string
-	Username  string
-}
-type PasswordDetails struct {
-	Username string
-	Password string
-}
-
-type User struct {
-	Name          string
-	Password      string
 	Authorization string
+	Password  string
 }
+//type PasswordDetails struct {
+//	Username string
+//	Password string
+//}
+
+//type User struct {
+//	Name          string
+//	Password      string
+//	Authorization string
+//}
 
 type DatabaseInterface interface {
-	//GetUserLoginDetails(username string) *LoginDetails
+	GetUserLoginDetails(username string) *LoginDetails
 	//GetUserPassword(username string) *PasswordDetails
-	GetAllUserDetails(username string) *User
+	//GetAllUserDetails(username string) *User
 	SetupDatabase() error
 }
 
